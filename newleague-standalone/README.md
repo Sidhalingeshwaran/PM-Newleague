@@ -6,14 +6,14 @@ The code is the original NewLeague implementation, copied unchanged except where
 
 ## Tech stack
 
-|                 |                                                                                                                                        |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Framework       | Next.js 14.2.35 (App Router), React 19.0.1, TypeScript 5.8                                                                             |
-| Styling         | Tailwind CSS 3.4 (+ `@tailwindcss/forms`, `@tailwindcss/typography`), one scoped stylesheet (`src/components/newleague/newleague.css`) |
-| Fonts           | Big Shoulders Display + Archivo via `next/font/google`                                                                                 |
-| Icons           | `lucide-react`                                                                                                                         |
-| 3D hero         | Custom Canvas 2D renderer (no WebGL library)                                                                                           |
-| Package manager | pnpm 10.11.1 (pinned via `packageManager`)                                                                                             |
+|                 |                                                                                                                                         |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework       | Next.js 14.2.35 (App Router), React 19.0.1, TypeScript 5.8                                                                              |
+| Styling         | Tailwind CSS 3.4 (+ `@tailwindcss/forms`, `@tailwindcss/typography`), one scoped stylesheet (`src/components/newleague/newleague.css`)  |
+| Fonts           | Big Shoulders Display + Archivo, self-hosted with `next/font/local` (files in `src/components/newleague/fonts/`, SIL Open Font License) |
+| Icons           | `lucide-react`                                                                                                                          |
+| 3D hero         | Custom Canvas 2D renderer (no WebGL library)                                                                                            |
+| Package manager | pnpm 10.11.1 (pinned via `packageManager`)                                                                                              |
 
 Versions are pinned to exactly what the PlayMatches monorepo lockfile resolved, so the site builds with the same toolchain it was developed with.
 
@@ -35,7 +35,7 @@ pnpm start        # http://localhost:3000
 
 Other scripts: `pnpm lint`, `pnpm typecheck`, `pnpm format`.
 
-**Network note:** `next build` downloads the two league fonts from Google Fonts (`fonts.googleapis.com`) at build time, the same as in the monorepo. Build on a machine that can reach Google Fonts.
+**Fonts:** the two league fonts are bundled in the repo, so `next build` needs no access to Google Fonts. (Earlier builds fetched them from Google at build time, which can crash Next.js 14.2 when Google returns a font URL without a file extension; see [vercel/next.js#99114](https://github.com/vercel/next.js/issues/99114).)
 
 ## Environment variables
 
@@ -49,7 +49,7 @@ No secrets are needed.
 
 ## External services
 
-- **Google Fonts**: build time only (see above).
+- **Google Fonts**: none. The fonts are self-hosted.
 - **None at runtime.** The site makes no API calls. All teams, players, fixtures and statistics come from local TypeScript files in `src/components/newleague/data/` and are **sample data**. The franchise enquiry form validates in the browser but **does not send anywhere**: there was no backend in the original either. The place to connect one is `submitEnquiryDemo()` in `src/components/newleague/contact/EnquiryForm.tsx`.
 
 ## Routes
