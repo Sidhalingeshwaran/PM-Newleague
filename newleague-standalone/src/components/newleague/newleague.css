@@ -1,0 +1,325 @@
+/*
+ * T. Dasarahalli Premier Badminton League — scoped styles.
+ * Every selector is namespaced under .nl-root so nothing here can leak into
+ * the rest of the PlayMatches player portal.
+ */
+
+.nl-root {
+  --nl-midnight: #061426;
+  --nl-navy: #0a1d35;
+  --nl-navy-2: #10294a;
+  --nl-gold: #f5c65d;
+  --nl-gold-deep: #d9a43a;
+  --nl-white: #ffffff;
+  --nl-muted: #aab8ca;
+  --nl-electric: #168bff;
+  --nl-line: rgba(235, 244, 255, 0.14);
+  --nl-header-h: 72px;
+
+  font-family: var(--nl-font-body), system-ui, sans-serif;
+  background: var(--nl-midnight);
+  color: var(--nl-white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+}
+
+.nl-root ::selection {
+  background: var(--nl-gold);
+  color: var(--nl-midnight);
+}
+
+/* Font family must beat the portal's global `h1` rule. */
+.nl-root .nl-display,
+.nl-root h1,
+.nl-root h2,
+.nl-root h3 {
+  font-family: var(--nl-font-display), 'Arial Narrow', sans-serif;
+}
+/* Zero-specificity so Tailwind utilities (normal-case, leading-*) can override. */
+:where(.nl-root) :where(.nl-display, h1, h2, h3) {
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+}
+
+.nl-root .nl-numeral {
+  font-family: var(--nl-font-display), 'Arial Narrow', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.nl-root .nl-wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+@media (min-width: 640px) {
+  .nl-root .nl-wrap {
+    padding-inline: 28px;
+  }
+}
+@media (min-width: 1024px) {
+  .nl-root .nl-wrap {
+    padding-inline: 48px;
+  }
+}
+
+/* Focus: always visible, gold, offset from the element. */
+.nl-root :focus-visible {
+  outline: 2px solid var(--nl-gold);
+  outline-offset: 3px;
+}
+
+.nl-root .nl-skip {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 100;
+  background: var(--nl-gold);
+  color: var(--nl-midnight);
+  padding: 10px 16px;
+  font-weight: 700;
+}
+.nl-root .nl-skip:focus {
+  top: 12px;
+}
+
+/* ---------- Buttons ---------- */
+.nl-root .nl-btn {
+  --chamfer: 12px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 26px;
+  font-family: var(--nl-font-display), sans-serif;
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--chamfer)),
+    calc(100% - var(--chamfer)) 100%,
+    0 100%
+  );
+  transition: background-color 200ms ease, color 200ms ease,
+    transform 200ms ease, box-shadow 200ms ease;
+  white-space: nowrap;
+}
+.nl-root .nl-btn:active {
+  transform: translateY(1px);
+}
+.nl-root .nl-btn--gold {
+  background: var(--nl-gold);
+  color: var(--nl-midnight);
+}
+.nl-root .nl-btn--gold:hover {
+  background: #ffd77d;
+}
+.nl-root .nl-btn--line {
+  color: var(--nl-white);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+.nl-root .nl-btn--line:hover {
+  box-shadow: inset 0 0 0 1px var(--nl-gold);
+  color: var(--nl-gold);
+}
+.nl-root .nl-btn--sm {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 1rem;
+  --chamfer: 9px;
+}
+.nl-root .nl-btn:focus-visible {
+  outline-offset: 4px;
+}
+
+/* ---------- Sample-data marker ---------- */
+.nl-root .nl-sample {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border: 1px dashed rgba(245, 198, 93, 0.65);
+  color: var(--nl-gold);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  max-width: 100%;
+}
+.nl-root .nl-sample svg {
+  flex-shrink: 0;
+}
+
+/* ---------- Court-line divider: a service line with a centre-line tee ---------- */
+.nl-root .nl-court-rule {
+  position: relative;
+  height: 1px;
+  background: var(--nl-line);
+}
+.nl-root .nl-court-rule::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 28px;
+  background: var(--nl-line);
+}
+
+/* Faint court markings used as a section backdrop. */
+.nl-root .nl-court-bg {
+  background-image: linear-gradient(var(--nl-line), var(--nl-line)),
+    linear-gradient(var(--nl-line), var(--nl-line)),
+    linear-gradient(var(--nl-line), var(--nl-line));
+  background-size: 1px 100%, 100% 1px, 100% 1px;
+  background-position: 50% 0, 0 22%, 0 78%;
+  background-repeat: no-repeat;
+}
+
+/* ---------- Page entrance (template.tsx re-mounts per navigation) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .nl-root .nl-page-enter {
+    animation: nl-page-in 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+@keyframes nl-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Hero headline reveal (the one orchestrated moment) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .nl-root .nl-rise > * {
+    animation: nl-rise 900ms cubic-bezier(0.16, 0.8, 0.2, 1) both;
+  }
+  .nl-root .nl-rise > *:nth-child(2) {
+    animation-delay: 110ms;
+  }
+  .nl-root .nl-rise > *:nth-child(3) {
+    animation-delay: 220ms;
+  }
+  .nl-root .nl-rise > *:nth-child(4) {
+    animation-delay: 330ms;
+  }
+  .nl-root .nl-fade-late {
+    animation: nl-page-in 700ms 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+@keyframes nl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 -10% 0);
+  }
+}
+
+/* ---------- Scroll reveal: content is only hidden when JS + motion allow ---------- */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .nl-root [data-reveal='pending'] {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .nl-root [data-reveal] {
+    transition: opacity 700ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+}
+
+/* ---------- Team card tilt ---------- */
+.nl-root .nl-tilt {
+  transform: perspective(900px) rotateX(var(--nl-rx, 0deg))
+    rotateY(var(--nl-ry, 0deg));
+  transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.nl-root .nl-tilt-light {
+  background: radial-gradient(
+    420px circle at var(--nl-mx, 50%) var(--nl-my, 0%),
+    rgba(255, 255, 255, 0.12),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.nl-root .nl-tilt:hover .nl-tilt-light,
+.nl-root .nl-tilt:focus-within .nl-tilt-light {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nl-root .nl-tilt {
+    transform: none !important;
+  }
+}
+
+/* ---------- Image parallax ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .nl-root .nl-parallax {
+    transform: translate3d(0, var(--nl-parallax, 0px), 0) scale(1.08);
+    will-change: transform;
+  }
+}
+
+/* ---------- Mobile menu ---------- */
+.nl-root .nl-menu[data-open='false'] {
+  opacity: 0;
+  visibility: hidden;
+  /* Hide only after the fade-out finishes. */
+  transition: opacity 260ms ease, visibility 0s linear 260ms;
+}
+.nl-root .nl-menu[data-open='true'] {
+  opacity: 1;
+  /* Visible immediately so focus can move into the menu on open. */
+  visibility: visible;
+  transition: opacity 260ms ease, visibility 0s;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nl-root .nl-menu li {
+    transition: transform 420ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 420ms ease;
+  }
+  .nl-root .nl-menu[data-open='false'] li {
+    transform: translateX(-24px);
+    opacity: 0;
+  }
+  .nl-root .nl-menu[data-open='true'] li {
+    transition-delay: calc(var(--i, 0) * 45ms + 80ms);
+  }
+}
+
+/* Native <dialog> for player profiles */
+.nl-dialog::backdrop {
+  background: rgba(3, 11, 23, 0.78);
+  backdrop-filter: blur(4px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nl-dialog[open] {
+    animation: nl-page-in 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+
+/* Hide number-input spinners and keep tables tidy */
+.nl-root .nl-table th,
+.nl-root .nl-table td {
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,58 @@
+/*
+ * Global styles extracted from apps/pm-player-portal/src/app/global.css.
+ * Only the Tailwind layers and the @layer base block are kept: they are the
+ * parts the league pages depend on (preflight, theme variables, border colour,
+ * html/body defaults). The rest of the original file styles PlayMatches-only
+ * components that no league page uses.
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 217 91% 50%;
+    --primary-foreground: 210 40% 98%;
+    --primary-dark: 220 95% 40%;
+    --secondary: 152 68% 47%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 217 91% 50%;
+    --radius: 0.75rem;
+
+    /* Sports Theme Colors */
+    --energy: 0 84% 60%;
+    --court: 142 70% 45%;
+    --hero-dark: 220 95% 15%;
+    --hero-mid: 217 91% 30%;
+    --hero-light: 152 68% 25%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body {
+    @apply bg-background text-foreground overflow-x-hidden;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-chakra-petch), sans-serif;
+  }
+
+  h1 {
+    font-family: var(--font-teko), sans-serif;
+  }
+}
